@@ -105,5 +105,51 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.networkmaps.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.networkmaps.entrypoints=web"
-
-
+    environment:
+      config__google_analytics_tag: ${config__google_analytics_tag}
+      config__serve_static_locally: ${config__serve_static_locally}
+      config__timers__usertimeout: ${config__timers__usertimeout}
+      config__timers__usersavetimeout: ${config__timers__usersavetimeout}
+      config__timers__savediagram: ${config__timers__savediagram}
+      config__timers__ldap_grouprefresh: ${config__timers__ldap_grouprefresh}
+      config__use_ssl_socket: ${config__use_ssl_socket}
+      config__use_ssl: ${config__use_ssl}
+      config__socket__address: ${config__socket__address}
+      config__socket__port: ${config__socket__port}
+      config__socket__cert: ${config__socket__cert}
+      config__socket__key: ${config__socket__key}
+      config__server__hostname: ${config__server__hostname}
+      config__server__port: ${config__server__port}
+      config__staticserver__hostname: ${config__staticserver__hostname}
+      config__staticserver__port: ${config__staticserver__port}
+      config__users__admin_username: ${config__users__admin_username}
+      config__users__admin_password: ${config__users__admin_password}
+      config__users__allowed_domains: ${config__users__allowed_domains}
+      config__users__register_self: ${config__users__register_self}
+      config__users__path: ${config__users__path}
+      config__users__authentication: ${config__users__authentication}
+      config__users__ldap__host: ${config__users__ldap__host}
+      config__users__ldap__port: ${config__users__ldap__port}
+      config__users__ldap__is_secure: ${config__users__ldap__is_secure}
+      config__users__ldap__bind_required: ${config__users__ldap__bind_required}
+      config__users__ldap__verify_cert: ${config__users__ldap__verify_cert}
+      config__users__ldap__search_dn: ${config__users__ldap__search_dn}
+      config__users__ldap__search_password: ${config__users__ldap__search_password}
+      config__users__ldap__base_dn: ${config__users__ldap__base_dn}
+      config__users__ldap__objectclass_user: ${config__users__ldap__objectclass_user}
+      config__users__ldap__allowed_groups_dn: ${config__users__ldap__allowed_groups_dn}
+      config__users__ldap__group_recursion: ${config__users__ldap__group_recursion}
+      config__users__ldap__email_attribute: ${config__users__ldap__email_attribute}
+      config__users__ldap__name_attribute: ${config__users__ldap__name_attribute}
+      config__users__ldap__lastname_attribute: ${config__users__ldap__lastname_attribute}
+      config__users__ldap__member_attribute: ${config__users__ldap__member_attribute}
+      config__diagrams__path: ${config__diagrams__path}
+      config__sendmail__queue: ${config__sendmail__queue}
+      config__sendmail__sent: ${config__sendmail__sent}
+      config__sendmail__server: ${config__sendmail__server}
+      config__sendmail__port: ${config__sendmail__port}
+      config__sendmail__is_secured: ${config__sendmail__is_secured}
+      config__sendmail__verify_ssl_cert: ${config__sendmail__verify_ssl_cert}
+      config__sendmail__user: ${config__sendmail__user}
+      config__sendmail__password: ${config__sendmail__password}
+      config__sendmail__from: ${config__sendmail__from}
