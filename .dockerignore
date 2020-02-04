@@ -1,0 +1,4 @@
+Makefile
+.git/
+.github/
+docker-compose.yml

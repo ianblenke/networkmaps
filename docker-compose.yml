@@ -1,0 +1,109 @@
+version: "3.7"
+
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+
+volumes:
+
+  portainer:
+  diagrams:
+  users:
+  sendmail:
+
+networks:
+
+  networkmaps:
+    driver: bridge
+
+services:
+
+  traefik:
+    container_name: "traefik"
+    hostname: "traefik"
+    image: traefik:v2.0.5
+    command:
+      - "--log.level=WARNING"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8081:8080"
+    networks:
+    - networkmaps
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+    logging: *default-logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=web"
+
+#  agent:
+#    hostname: agent
+#    container_name: agent
+#    image: portainer/agent
+#    environment:
+#      # REQUIRED: Should be equal to the service name prefixed by "tasks." when
+#      # deployed inside an overlay network
+#      AGENT_CLUSTER_ADDR: agent
+#      # AGENT_PORT: 9001
+#      # LOG_LEVEL: debug
+#    networks:
+#    - networkmaps
+#    restart: always
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#      - /var/lib/docker/volumes:/var/lib/docker/volumes
+#    logging: *default-logging
+#    labels:
+#      - "traefik.enable=false"
+
+  portainer:
+    hostname: portainer
+    container_name: portainer
+    image: portainer/portainer
+    command: -H unix://var/run/docker.sock
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+    - networkmaps
+    restart: always
+    logging: *default-logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)"
+      - "traefik.http.routers.portainer.entrypoints=web"
+
+  networkmaps:
+    hostname: networkmaps
+    container_name: networkmaps
+    build: .
+    volumes:
+    - diagrams:/var/lib/networkmaps/diagrams
+    - users:/var/lib/networkmaps/users
+    - sendmail:/var/lib/networkmaps/sendmail/queue
+    ports:
+    - "3000:3000"
+    networks:
+    - networkmaps
+    restart: always
+    logging: *default-logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.networkmaps.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.networkmaps.entrypoints=web"
+
+
